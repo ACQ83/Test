@@ -55,12 +55,12 @@ function getArrayForTable()
 }
 
 function addNewTask(string $text)  
-{	$name = bin2hex(random_bytes(4));
-	$path = './task/' . $name;
-	while (file_exists($path)) {
-		$name = bin2hex(random_bytes(4));
-		$path = './task/' . $name;
-	}    
+{   $name = bin2hex(random_bytes(4));
+    $path = './task/' . $name;
+    while (file_exists($path)) {
+        $name = bin2hex(random_bytes(4));
+        $path = './task/' . $name;
+    }    
     $newTask = [];
     $newTask["date"] = time();
     $newTask["task"] = $text;

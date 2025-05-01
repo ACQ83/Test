@@ -17,9 +17,6 @@
     <?php
 
     require_once 'functions.php';
- 
-    $count = count(getArrayForTable());
-    var_dump($count);
     $taskNumber = 1;
     foreach (getArrayForTable() as $row) {
         
