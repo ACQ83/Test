@@ -1,4 +1,9 @@
 <?php 
+    $root = $_SERVER["DOCUMENT_ROOT"];
+    $dir = $root . '/task/';
+    if (!file_exists($dir)) { 
+        mkdir($dir, 0755, true);
+    }
 
 if (isset($_POST['newTask']) && !empty(trim($_POST['newTask']))) {
     addNewTask($_POST['newTask']); 
@@ -58,10 +63,6 @@ function addNewTask(string $text)
     $newTask["status"] = false;
     $newTask["name"] = $name;
     $newTask["priority"] = 0;
-    if (!file_exists('task')) { 
-        mkdir('task', 0777, true);
-        chmod('task',0777);
-    }
     $path = './task/' . $name;
     file_put_contents($path, json_encode($newTask));    
 }

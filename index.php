@@ -34,10 +34,9 @@
         <td><?= getState($rowName, $state) ?></td>
         <td><select name="p[<?= $rowName ?>]">
         <?= getOptionSelect($priority) ?></select></td>
-        <td><button type="submit" name ="d[<?= $rowName ?>]">Remove</button></td>
-            <?php $taskNumber++;
-            } 
-        ?>
+        <td><button type="submit" name ="d[<?= $rowName ?>]">Remove</button></td><?php $taskNumber++;
+    }         
+            ?>
     </tr></tbody></table>
     <p><input type="submit" value="Save"></p>
 </form>
