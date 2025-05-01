@@ -13,6 +13,41 @@ if (isset($_POST['d'])) {
 }
 
 
+function getState(string $rowName, string $state)
+{
+    echo "<input type=\"hidden\" name =\"s[$rowName]\" value = \"0\" form = \"active\"><input type=\"checkbox\" name=\"s[$rowName]\"".$state." form = \"active\">";
+}
+
+function getOptionSelect(int $priority)
+{   
+    $outText = "";
+    for ($j = 0; $j < 11; $j++) {
+            if($j === $priority) {
+                $outText = $outText."<option value=\"$j\" selected>$j</option>";
+                continue;
+                }
+                 $outText = $outText."<option value=\"$j\">$j</option>";
+        }
+        echo $outText;
+}
+
+function getArrayForTable()
+{
+    $arr = scandir('./task/');
+    $arrForTable = [];
+    foreach ($arr as $name) {
+        if(is_file('./task/' . $name)){
+            $jsonArray = json_decode(file_get_contents('./task/' . $name), TRUE);
+            $arrForTable[] = $jsonArray;
+        }
+    }
+
+    arsort($arrForTable);
+    usort($arrForTable, 'function_DESC'); 
+    uasort($arrForTable, 'function_ASC');
+
+    return $arrForTable;
+}
 
 function addNewTask(string $text)  
 {
@@ -32,24 +67,26 @@ function addNewTask(string $text)
 }
 
 function saveChanges($changes)
-{
-    foreach($changes['s']  as $key => $value) {
-        $path = './task/' . $key;
-        $baseArr = json_decode(file_get_contents($path), TRUE);
-        if (file_exists($path)) {
-            $baseArr["status"] = $value;
-            file_put_contents($path, json_encode($baseArr));
+{   if(isset($changes['s'])) {
+        foreach($changes['s']  as $key => $value) {
+            $path = './task/' . $key;
+            if (file_exists($path)) {
+                $baseArr = json_decode(file_get_contents($path), TRUE);
+                $baseArr["status"] = $value;
+                file_put_contents($path, json_encode($baseArr));
+            }
         }
     }
-    foreach($changes['p']  as $key => $value) {
-        $path = './task/' . $key;
-        $baseArr = json_decode(file_get_contents($path), TRUE);
-        if (file_exists($path)) {
-            $baseArr["priority"] = $value;
-            file_put_contents($path, json_encode($baseArr));
+    if(isset($changes['p'])) {
+        foreach($changes['p']  as $key => $value) {
+            $path = './task/' . $key;
+            if (file_exists($path)) {
+                $baseArr = json_decode(file_get_contents($path), TRUE);
+                $baseArr["priority"] = $value;
+                file_put_contents($path, json_encode($baseArr));
+            }
         }
     }
-
 }
 
 function deleteTask($delete) 
@@ -60,8 +97,17 @@ function deleteTask($delete)
     }
 }
 
+
+function function_ASC($a, $b){
+    return ($a['status'] > $b['status']);
+}
+
+function function_DESC($a, $b){
+    return ($a['priority'] < $b['priority']);
+}
+
 if ($_POST) {
       header( "Location: {$_SERVER['REQUEST_URI']}", true, 303 );
 }
-?>
 
+?>
