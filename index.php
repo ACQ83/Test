@@ -6,35 +6,40 @@
     <title>Document</title>
 </head>
 <body>
-
-<h3>ToDo List</h3>
 <form id ="active" method="POST">
-    <p><input type = "text" name = "newTask"/><input type="submit" value="send"></p>
     <table border = 1>
+    <caption>ToDo List</caption>
     <thead>
-    <tr><th>N</th><th>Date</th><th>Text Task</th><th>Status</th><th>Priority</th><th>Remove</th></tr></thead><tbody><tr>
-
+    <tr>
+        <th>Date</th>
+        <th>Text Task</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Remove</th>
+    </tr>
+</thead>
+<tbody>
     <?php
 
     require_once 'functions.php';
-    $taskNumber = 1;
     foreach (getArrayForTable() as $row) {
-        
         $state = $row["status"]?" checked":"";
         $priority = (int)$row["priority"];
         $task = htmlspecialchars($row["task"],ENT_QUOTES);
         $rowName = $row["name"];
     ?>
-        <tr><td><?= $taskNumber ?></td>
+        <tr>
         <td><?= date('d.m.Y H:i:s', $row["date"]) ?></td>
         <td><?= $task ?></td>
         <td><?= getState($rowName, $state) ?></td>
         <td><select name="p[<?= $rowName ?>]">
         <?= getOptionSelect($priority) ?></select></td>
-        <td><button type="submit" name ="d[<?= $rowName ?>]">Remove</button></td><?php $taskNumber++;
-    }         
-            ?>
-    </tr></tbody></table>
+        <td><button type="submit" name ="d[<?= $rowName ?>]">Remove</button></td>
+    <?php } ?>
+    </tr>
+</tbody>
+</table>
+    <p><input type = "text" name = "newTask"/><input type="submit" value="send"></p>
     <p><input type="submit" value="Save"></p>
 </form>
 </body>

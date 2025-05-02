@@ -13,15 +13,16 @@ if (isset($_POST)) {
     saveChanges($_POST);
 }
 
+
 if (isset($_POST['d'])) {
     deleteTask($_POST['d']); 
 }
-
 
 function getState(string $rowName, string $state)
 {
     echo "<input type=\"hidden\" name =\"s[$rowName]\" value = \"0\" form = \"active\"><input type=\"checkbox\" name=\"s[$rowName]\"".$state." form = \"active\">";
 }
+
 
 function getOptionSelect(int $priority)
 {   
@@ -71,24 +72,18 @@ function addNewTask(string $text)
 }
 
 function saveChanges($changes)
-{   if(isset($changes['s'])) {
+{   
+    if(isset($changes['s'])) {
+        $p = array_values($changes['p']);
+        $i = 0;
         foreach($changes['s']  as $key => $value) {
             $path = './task/' . $key;
             if (file_exists($path)) {
                 $baseArr = json_decode(file_get_contents($path), TRUE);
                 $baseArr["status"] = $value;
+                $baseArr["priority"] = $p[$i];
                 file_put_contents($path, json_encode($baseArr));
-            }
-        }
-    }
-    if(isset($changes['p'])) {
-        foreach($changes['p']  as $key => $value) {
-            $path = './task/' . $key;
-            if (file_exists($path)) {
-                $baseArr = json_decode(file_get_contents($path), TRUE);
-                $baseArr["priority"] = $value;
-                file_put_contents($path, json_encode($baseArr));
-            }
+            }$i++;
         }
     }
 }
@@ -110,8 +105,8 @@ function function_DESC($a, $b){
     return ($a['priority'] < $b['priority']);
 }
 
-if ($_POST) {
-      header( "Location: {$_SERVER['REQUEST_URI']}", true, 303 );
-}
+//if ($_POST) {
+//      header( "Location: {$_SERVER['REQUEST_URI']}", true, 303 );
+//}
 
 ?>
