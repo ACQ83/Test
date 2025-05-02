@@ -74,16 +74,14 @@ function addNewTask(string $text)
 function saveChanges($changes)
 {   
     if(isset($changes['s'])) {
-        $p = array_values($changes['p']);
-        $i = 0;
         foreach($changes['s']  as $key => $value) {
             $path = './task/' . $key;
             if (file_exists($path)) {
                 $baseArr = json_decode(file_get_contents($path), TRUE);
                 $baseArr["status"] = $value;
-                $baseArr["priority"] = $p[$i];
+                $baseArr["priority"] = $changes['p'][$key];
                 file_put_contents($path, json_encode($baseArr));
-            }$i++;
+            }
         }
     }
 }
