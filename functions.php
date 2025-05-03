@@ -5,6 +5,9 @@
         mkdir($dir, 0755, true);
     }
 
+
+
+
 if (isset($_POST['newTask']) && !empty(trim($_POST['newTask']))) {
     addNewTask($_POST['newTask']); 
 }
@@ -13,14 +16,15 @@ if (isset($_POST)) {
     saveChanges($_POST);
 }
 
-
-if (isset($_POST['d'])) {
-    deleteTask($_POST['d']); 
+if (isset($_POST['d']) && empty(trim($_POST['newTask']))) {
+    deleteTask($_POST['d']);
 }
+
+
 
 function getState(string $rowName, string $state)
 {
-    echo "<input type=\"hidden\" name =\"s[$rowName]\" value = \"0\" form = \"active\"><input type=\"checkbox\" name=\"s[$rowName]\"".$state." form = \"active\">";
+    echo "<input type=\"hidden\" name =\"s[$rowName]\" value = \"0\" form = \"active\"><input type=\"checkbox\" name=\"s[$rowName]\"".$state." form = \"active\" onchange=\"this.form.submit()\"";
 }
 
 
@@ -56,7 +60,8 @@ function getArrayForTable()
 }
 
 function addNewTask(string $text)  
-{   $name = bin2hex(random_bytes(4));
+{   
+    $name = bin2hex(random_bytes(4));
     $path = './task/' . $name;
     while (file_exists($path)) {
         $name = bin2hex(random_bytes(4));
@@ -88,6 +93,7 @@ function saveChanges($changes)
 
 function deleteTask($delete) 
 {   
+    var_dump($delete);
     foreach($delete as $key => $value) {
         $path = './task/' . $key;
         unlink($path);
@@ -103,8 +109,9 @@ function function_DESC($a, $b){
     return ($a['priority'] < $b['priority']);
 }
 
-//if ($_POST) {
-//      header( "Location: {$_SERVER['REQUEST_URI']}", true, 303 );
-//}
+if ($_POST) {
+      header( "Location: {$_SERVER['REQUEST_URI']}", true, 303 );
+}
+
 
 ?>

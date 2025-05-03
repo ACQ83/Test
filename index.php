@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="ru">
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
     <meta charset="UTF-8">
     <title>Document</title>
 </head>
@@ -32,15 +31,15 @@
         <td><?= date('d.m.Y H:i:s', $row["date"]) ?></td>
         <td><?= $task ?></td>
         <td><?= getState($rowName, $state) ?></td>
-        <td><select name="p[<?= $rowName ?>]">
+        <td><select name="p[<?= $rowName ?>]" onchange="this.form.submit()">
         <?= getOptionSelect($priority) ?></select></td>
-        <td><button type="submit" name ="d[<?= $rowName ?>]">Remove</button></td>
+        <td><button type="submit" name = "d[<?= $rowName ?>]">Remove</button></td>
     <?php } ?>
     </tr>
 </tbody>
 </table>
-    <p><input type = "text" name = "newTask"/><input type="submit" value="send"></p>
-    <p><input type="submit" value="Save"></p>
+<p><input type = "text" name = "newTask"><input type="submit" value="send"></p>
 </form>
+
 </body>
 </html>
